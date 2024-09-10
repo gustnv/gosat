@@ -6,9 +6,10 @@ extern "C" {
 #endif
 
 #include <stdbool.h> // For boolean types
+#include <stdlib.h>  // For NULL
 
 // Define the solver wrapper type
-typedef void* WrapSolver;
+typedef void *WrapSolver;
 
 // Function prototypes
 
@@ -16,13 +17,13 @@ typedef void* WrapSolver;
 WrapSolver NewSolver(double seed);
 
 // Declare new variables in the solver
-void minisat_declare_vars(void* s, const int max_id);
+void minisat_declare_vars(void *s, const int max_id);
 
 // Translate an iterable to Minisat literals
 bool minisat_iterate(void *obj, void *v, int *max_var);
 
 // Set the start mode of the solver
-void minisat_set_start(WrapSolver s_obj, int warm_start);
+// void minisat_set_start(WrapSolver s_obj, int warm_start);
 
 // Add a clause to the solver
 bool minisat_add_cl(WrapSolver s_obj, void *c_obj);
@@ -34,10 +35,10 @@ bool minisat_solve(WrapSolver s_obj, void *a_obj, int main_thread);
 void minisat_clearint(WrapSolver s_obj);
 
 // Get the core conflict set
-void* minisat_core(WrapSolver s_obj);
+void *minisat_core(WrapSolver s_obj);
 
 // Get the model after solving
-void* minisat_model(WrapSolver s_obj);
+void *minisat_model(WrapSolver s_obj);
 
 // Get the number of variables in the solver
 int minisat_nof_vars(WrapSolver s_obj);

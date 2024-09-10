@@ -8,6 +8,7 @@ package gosat
 import "C"
 import (
 	"errors"
+	"fmt"
 	"time"
 	"unsafe"
 )
@@ -22,9 +23,11 @@ type Minisat struct {
 }
 
 // NewMinisat creates a new Minisat solver instance.
-func NewMinisat(bootstrapWith [][]int, useTimer bool, warmStart bool) (*Minisat, error) {
+func NewMinisat(bootstrapWith [][]int, useTimer bool) (*Minisat, error) {
 	solver := &Minisat{}
 	solver.minisat = C.NewSolver(0) // Default seed value
+
+	fmt.Println("Solver created.")
 
 	if solver.minisat == nil {
 		return nil, errors.New("failed to create Minisat solver instance")
@@ -38,9 +41,9 @@ func NewMinisat(bootstrapWith [][]int, useTimer bool, warmStart bool) (*Minisat,
 		}
 	}
 
-	if warmStart {
-		solver.StartMode(true)
-	}
+	// if warmStart {
+	// 	solver.StartMode(true)
+	// }
 
 	solver.useTimer = useTimer
 	solver.callTime = 0.0
@@ -105,11 +108,11 @@ func (s *Minisat) AddClause(clause []int) error {
 }
 
 // StartMode sets the solver's start mode.
-func (s *Minisat) StartMode(warm bool) {
-	if s.minisat != nil {
-		C.minisat_set_start(s.minisat, C.int(boolToInt(warm)))
-	}
-}
+// func (s *Minisat) StartMode(warm bool) {
+// 	if s.minisat != nil {
+// 		C.minisat_set_start(s.minisat, C.int(boolToInt(warm)))
+// 	}
+// }
 
 // GetModel returns the model found after solving.
 func (s *Minisat) GetModel() ([]int, error) {

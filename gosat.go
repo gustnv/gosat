@@ -1,9 +1,10 @@
 package gosat
 
 /*
-#cgo CXXFLAGS: -I./minisat/minisat  // Include the path to the MiniSat headers
-#cgo LDFLAGS: -L./minisat -lminisat // Link against the MiniSat library
+#cgo CXXFLAGS: -I./minisat/minisat
+#cgo LDFLAGS: -L./minisat -lminisat
 #include <stdlib.h>
+#include "gosat.h"
 */
 import "C"
 import (

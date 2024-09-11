@@ -1,6 +1,6 @@
 #include "gosat.h"
-#include ".core/Solver.h"
-#include ".minisat/core/SolverTypes.h"
+#include "minisat/minisat/core/Solver.h"
+#include "minisat/minisat/core/SolverTypes.h"
 #include <csetjmp>
 #include <csignal>
 #include <iostream>

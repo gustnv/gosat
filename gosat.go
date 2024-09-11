@@ -1,8 +1,8 @@
-package gosat
+package solver
 
 /*
-#cgo LDFLAGS: -lminisat
-#include "gosat.h" // Header file for interfacing with C/C++ code
+#cgo CXXFLAGS: -I./minisat/minisat  // Include the path to the MiniSat headers
+#cgo LDFLAGS: -L./minisat -lminisat // Link against the MiniSat library
 #include <stdlib.h>
 */
 import "C"

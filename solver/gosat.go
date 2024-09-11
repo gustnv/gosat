@@ -1,4 +1,4 @@
-package solver
+package gosat
 
 /*
 #cgo CXXFLAGS: -I../minisat/minisat

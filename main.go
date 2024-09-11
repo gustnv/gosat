@@ -15,26 +15,24 @@ func main() {
 	defer minisatInstance.Delete()
 
 	// Attempt to add a clause
-	clause := []int{1, 2, 3}
+	clause := []int{1, -2}
 	err = minisatInstance.AddClause(clause, false)
-	if err != nil {
-		fmt.Println("Failed to add clause:", err)
-	} else {
-		fmt.Println("Clause added successfully.")
-	}
-
+	clause = []int{2, -3}
+	err = minisatInstance.AddClause(clause, false)
+	clause = []int{3, -1}
+	err = minisatInstance.AddClause(clause, false)
+	clause = []int{1, 2, 3}
+	err = minisatInstance.AddClause(clause, false)
 	clause = []int{-1, -2, -3}
 	err = minisatInstance.AddClause(clause, false)
+
+	// Solve the formula
+	assumptions := []int{}
+	result, err := minisatInstance.Solve(assumptions)
 	if err != nil {
-		fmt.Println("Failed to add clause:", err)
+		fmt.Println("Failed to solve formula:", err)
 	} else {
-		fmt.Println("Clause added successfully.")
+		fmt.Println("Formula solved successfully. Result:", result)
 	}
 
-	// Check the status of the solver
-	if minisatInstance.Status {
-		fmt.Println("Solver status: OK")
-	} else {
-		fmt.Println("Solver status: Failed to add clause.")
-	}
 }

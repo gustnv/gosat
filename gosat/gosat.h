@@ -12,6 +12,7 @@ typedef struct MinisatSolver MinisatSolver;
 struct MinisatSolver *minisatgh_new();
 void minisatgh_delete(struct MinisatSolver *solver);
 int minisatgh_add_cl(struct MinisatSolver *solver, int *clause, int length);
+int minisatgh_solve(MinisatSolver* solver, int* assumptions, int length);
 
 #ifdef __cplusplus
 }

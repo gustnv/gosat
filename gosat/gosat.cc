@@ -40,3 +40,24 @@ int minisatgh_add_cl(MinisatSolver* solver, int* clause, int length) {
 
     return solver->solver.addClause(cl) ? 1 : 0;
 }
+
+int minisatgh_solve(MinisatSolver* solver, int* assumptions, int length) {
+    if (!solver) return 0;
+
+    Minisat::vec<Minisat::Lit> assumps;
+    int max_var = -1;
+
+    for (int i = 0; i < length; ++i) {
+        int lit = assumptions[i];
+        assumps.push((lit > 0) ? Minisat::mkLit(lit - 1, false) : Minisat::mkLit(-lit - 1, true));
+        if (abs(lit) > max_var) max_var = abs(lit);
+    }
+
+    if (max_var > solver->solver.nVars()) {
+        for (int i = solver->solver.nVars(); i <= max_var; ++i) {
+            solver->solver.newVar();
+        }
+    }
+
+    return solver->solver.solve(assumps) ? 1 : 0;
+}

@@ -66,3 +66,27 @@ func (m *MinisatGH) AddClause(clause []int, noReturn bool) error {
 
 	return nil
 }
+
+// Solve function added to call the underlying C function
+func (m *MinisatGH) Solve(assumptions []int) (bool, error) {
+	if m.minisat == nil {
+		return false, errors.New("solver is not initialized")
+	}
+
+	cAssumptions := (*C.int)(C.malloc(C.size_t(len(assumptions)) * C.size_t(unsafe.Sizeof(C.int(0)))))
+	defer C.free(unsafe.Pointer(cAssumptions))
+
+	slice := (*[1 << 30]C.int)(unsafe.Pointer(cAssumptions))[:len(assumptions):len(assumptions)]
+	for i, lit := range assumptions {
+		slice[i] = C.int(lit)
+	}
+
+	// Call to the C++ function
+	res := C.minisatgh_solve(m.minisat, cAssumptions, C.int(len(assumptions)))
+
+	if res == 0 {
+		return false, nil
+	}
+
+	return true, nil
+}

@@ -3,34 +3,38 @@ package main
 import (
 	"fmt"
 	"github.com/gustnv/gosat/gosat"
-	"log"
 )
 
 func main() {
-	fmt.Println("hey")
-	// Create a new Minisat solver instance
-	solver, err := gosat.NewMinisat(nil, false)
+	// Create a new MinisatGH instance
+	minisatInstance, err := gosat.NewMinisatGH(nil, false, false)
 	if err != nil {
-		log.Fatalf("failed to create Minisat solver instance: %v", err)
+		fmt.Println("Failed to create MinisatGH instance:", err)
+		return
 	}
-	defer solver.Delete()
+	defer minisatInstance.Delete()
 
-	// Add a clause to the solver
+	// Attempt to add a clause
 	clause := []int{1, 2, 3}
-	if err := solver.AddClause(clause); err != nil {
-		log.Fatalf("failed to add clause to solver: %v", err)
+	err = minisatInstance.AddClause(clause, false)
+	if err != nil {
+		fmt.Println("Failed to add clause:", err)
+	} else {
+		fmt.Println("Clause added successfully.")
 	}
-	//
-	// // Solve the SAT problem
-	// status, err := solver.Solve(nil)
-	// if err != nil {
-	// 	log.Fatalf("failed to solve SAT problem: %v", err)
-	// }
-	//
-	// // Print the result
-	// if status {
-	// 	log.Println("SAT")
-	// } else {
-	// 	log.Println("UNSAT")
-	// }
+
+	clause = []int{-1, -2, -3}
+	err = minisatInstance.AddClause(clause, false)
+	if err != nil {
+		fmt.Println("Failed to add clause:", err)
+	} else {
+		fmt.Println("Clause added successfully.")
+	}
+
+	// Check the status of the solver
+	if minisatInstance.Status {
+		fmt.Println("Solver status: OK")
+	} else {
+		fmt.Println("Solver status: Failed to add clause.")
+	}
 }

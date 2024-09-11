@@ -9,6 +9,7 @@ package solver
 import "C"
 import (
 	"errors"
+	"fmt"
 	"unsafe"
 )
 
@@ -56,6 +57,7 @@ func (m *MinisatGH) AddClause(clause []int, noReturn bool) error {
 		slice[i] = C.int(lit)
 	}
 
+	fmt.Println("Adding clause: ", clause)
 	res := C.minisatgh_add_cl(m.minisat, (*C.int)(cClause), C.int(len(clause)))
 	if res == 0 {
 		m.Status = false // Update Status on failure

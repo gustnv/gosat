@@ -23,12 +23,12 @@ CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #ifndef Minisat_Solver_h
 #define Minisat_Solver_h
 
-#include "minisat/core/SolverTypes.h"
-#include "minisat/mtl/Alg.h"
-#include "minisat/mtl/Heap.h"
-#include "minisat/mtl/IntMap.h"
-#include "minisat/mtl/Vec.h"
-#include "minisat/utils/Options.h"
+#include "../minisat/core/SolverTypes.h"
+#include "../minisat/mtl/Alg.h"
+#include "../minisat/mtl/Heap.h"
+#include "../minisat/mtl/IntMap.h"
+#include "../minisat/mtl/Vec.h"
+#include "../minisat/utils/Options.h"
 
 namespace Minisat {
 

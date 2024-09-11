@@ -14,11 +14,13 @@ func main() {
 	}
 	defer minisatInstance.Delete()
 
-	minisatInstance.AddClause([]int{1, -2}, false)
-	minisatInstance.AddClause([]int{2, -3}, false)
-	minisatInstance.AddClause([]int{3, -1}, false)
-	minisatInstance.AddClause([]int{1, 2, 3}, false)
-	// minisatInstance.AddClause([]int{-1, -2, -3}, false)
+	f := [][]int{[]int{1, -2}, []int{2, -3}, []int{3, -1}, []int{1, 2, 3}}
+
+	// minisatInstance.AddClause([]int{1, -2}, false)
+	// minisatInstance.AddClause([]int{2, -3}, false)
+	// minisatInstance.AddClause([]int{3, -1}, false)
+	// minisatInstance.AddClause([]int{1, 2, 3}, false)
+	minisatInstance.AppendFormula(f)
 
 	result, err := minisatInstance.Solve()
 	if err != nil {

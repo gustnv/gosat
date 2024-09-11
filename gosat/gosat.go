@@ -110,3 +110,20 @@ func (m *MinisatGH) GetModel() ([]int, error) {
 
 	return model, nil
 }
+
+func (m *MinisatGH) AppendFormula(formula [][]int) error {
+	if m.minisat == nil {
+		return errors.New("solver is not initialized")
+	}
+
+	for _, clause := range formula {
+		err := m.AddClause(clause, true)
+
+		if err != nil {
+			m.Status = false // Update the Status field on failure
+			return err
+		}
+	}
+
+	return nil
+}

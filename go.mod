@@ -1,3 +1,3 @@
-module github.com/gustnv/gosat
+module gosat
 
 go 1.22.6

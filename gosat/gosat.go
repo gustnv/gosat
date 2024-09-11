@@ -68,25 +68,45 @@ func (m *MinisatGH) AddClause(clause []int, noReturn bool) error {
 }
 
 // Solve function added to call the underlying C function
-func (m *MinisatGH) Solve(assumptions []int) (bool, error) {
+func (m *MinisatGH) Solve() (bool, error) {
 	if m.minisat == nil {
 		return false, errors.New("solver is not initialized")
 	}
 
-	cAssumptions := (*C.int)(C.malloc(C.size_t(len(assumptions)) * C.size_t(unsafe.Sizeof(C.int(0)))))
-	defer C.free(unsafe.Pointer(cAssumptions))
-
-	slice := (*[1 << 30]C.int)(unsafe.Pointer(cAssumptions))[:len(assumptions):len(assumptions)]
-	for i, lit := range assumptions {
-		slice[i] = C.int(lit)
-	}
-
-	// Call to the C++ function
-	res := C.minisatgh_solve(m.minisat, cAssumptions, C.int(len(assumptions)))
+	// Call the C++ function to solve the problem
+	res := C.minisatgh_solve(m.minisat)
 
 	if res == 0 {
 		return false, nil
 	}
 
 	return true, nil
+}
+
+func (m *MinisatGH) GetModel() ([]int, error) {
+	if m.minisat == nil {
+		return nil, errors.New("solver is not initialized")
+	}
+
+	// Call the C function to get the size of the model
+	modelSize := C.minisatgh_model_size(m.minisat)
+	if modelSize == 0 {
+		return nil, errors.New("no model available")
+	}
+
+	// Call the C function to get the model
+	cModel := C.minisatgh_model(m.minisat)
+	if cModel == nil {
+		return nil, errors.New("no model available")
+	}
+	defer C.free(unsafe.Pointer(cModel))
+
+	// Copy the model from the C array to a Go slice
+	model := make([]int, int(modelSize))
+	slice := (*[1 << 30]C.int)(unsafe.Pointer(cModel))[:modelSize:modelSize]
+	for i := range model {
+		model[i] = int(slice[i])
+	}
+
+	return model, nil
 }

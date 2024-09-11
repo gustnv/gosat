@@ -14,25 +14,24 @@ func main() {
 	}
 	defer minisatInstance.Delete()
 
-	// Attempt to add a clause
-	clause := []int{1, -2}
-	err = minisatInstance.AddClause(clause, false)
-	clause = []int{2, -3}
-	err = minisatInstance.AddClause(clause, false)
-	clause = []int{3, -1}
-	err = minisatInstance.AddClause(clause, false)
-	clause = []int{1, 2, 3}
-	err = minisatInstance.AddClause(clause, false)
-	clause = []int{-1, -2, -3}
-	err = minisatInstance.AddClause(clause, false)
+	minisatInstance.AddClause([]int{1, -2}, false)
+	minisatInstance.AddClause([]int{2, -3}, false)
+	minisatInstance.AddClause([]int{3, -1}, false)
+	minisatInstance.AddClause([]int{1, 2, 3}, false)
+	// minisatInstance.AddClause([]int{-1, -2, -3}, false)
 
-	// Solve the formula
-	assumptions := []int{}
-	result, err := minisatInstance.Solve(assumptions)
+	result, err := minisatInstance.Solve()
 	if err != nil {
 		fmt.Println("Failed to solve formula:", err)
 	} else {
 		fmt.Println("Formula solved successfully. Result:", result)
+	}
+
+	r, err := minisatInstance.GetModel()
+	if err != nil {
+		fmt.Println("Failed to get model:", err)
+	} else {
+		fmt.Println("Model:", r)
 	}
 
 }

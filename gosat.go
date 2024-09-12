@@ -13,18 +13,18 @@ import (
 	"unsafe"
 )
 
-type MinisatGH struct {
+type Solver struct {
 	minisat *C.MinisatSolver
 	Status  bool // Exported field
 }
 
-func NewMinisatGH(bootstrapWith [][]int, useTimer bool, warmStart bool) (*MinisatGH, error) {
+func NewSolver(bootstrapWith [][]int, useTimer bool, warmStart bool) (*Solver, error) {
 	solver := C.minisatgh_new()
 	if solver == nil {
 		return nil, errors.New("cannot create a new solver")
 	}
 
-	m := &MinisatGH{minisat: solver, Status: true} // Initialize Status as true
+	m := &Solver{minisat: solver, Status: true} // Initialize Status as true
 
 	if bootstrapWith != nil {
 		for _, clause := range bootstrapWith {
@@ -37,14 +37,14 @@ func NewMinisatGH(bootstrapWith [][]int, useTimer bool, warmStart bool) (*Minisa
 	return m, nil
 }
 
-func (m *MinisatGH) Delete() {
+func (m *Solver) Delete() {
 	if m.minisat != nil {
 		C.minisatgh_delete(m.minisat)
 		m.minisat = nil
 	}
 }
 
-func (m *MinisatGH) AddClause(clause []int, noReturn bool) error {
+func (m *Solver) AddClause(clause []int, noReturn bool) error {
 	if m.minisat == nil {
 		return errors.New("solver is not initialized")
 	}
@@ -71,7 +71,7 @@ func (m *MinisatGH) AddClause(clause []int, noReturn bool) error {
 }
 
 // Solve function added to call the underlying C function
-func (m *MinisatGH) Solve() (bool, error) {
+func (m *Solver) Solve() (bool, error) {
 	if m.minisat == nil {
 		return false, errors.New("solver is not initialized")
 	}
@@ -86,7 +86,7 @@ func (m *MinisatGH) Solve() (bool, error) {
 	return true, nil
 }
 
-func (m *MinisatGH) GetModel() ([]int, error) {
+func (m *Solver) GetModel() ([]int, error) {
 	if m.minisat == nil {
 		return nil, errors.New("solver is not initialized")
 	}
@@ -114,7 +114,7 @@ func (m *MinisatGH) GetModel() ([]int, error) {
 	return model, nil
 }
 
-func (m *MinisatGH) AppendFormula(formula [][]int) error {
+func (m *Solver) AppendFormula(formula [][]int) error {
 	if m.minisat == nil {
 		return errors.New("solver is not initialized")
 	}

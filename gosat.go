@@ -17,7 +17,7 @@ type Solver struct {
 	Status  bool // Exported field
 }
 
-func NewSolver(bootstrapWith [][]int) (*Solver, error) {
+func NewSolver(bootstrapWith ...[][]int) (*Solver, error) {
 	solver := C.minisatgh_new()
 	if solver == nil {
 		return nil, errors.New("cannot create a new solver")
@@ -27,7 +27,7 @@ func NewSolver(bootstrapWith [][]int) (*Solver, error) {
 
 	if bootstrapWith != nil {
 		for _, clause := range bootstrapWith {
-			if err := m.AddClause(clause, true); err != nil {
+			if err := m.AddClause(clause); err != nil {
 				return nil, err
 			}
 		}
@@ -115,7 +115,7 @@ func (m *Solver) AppendFormula(formula [][]int) error {
 	}
 
 	for _, clause := range formula {
-		err := m.AddClause(clause, true)
+		err := m.AddClause(clause)
 
 		if err != nil {
 			m.Status = false // Update the Status field on failure

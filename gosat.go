@@ -25,8 +25,9 @@ func NewSolver(bootstrapWith ...[][]int) (*Solver, error) {
 
 	m := &Solver{minisat: solver, Status: true} // Initialize Status as true
 
-	if bootstrapWith != nil {
-		for _, clause := range bootstrapWith {
+	// Check if any clauses were passed via bootstrapWith
+	if len(bootstrapWith) > 0 && bootstrapWith[0] != nil {
+		for _, clause := range bootstrapWith[0] {
 			if err := m.AddClause(clause); err != nil {
 				return nil, err
 			}

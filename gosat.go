@@ -1,8 +1,8 @@
 package solver
 
 /*
-#cgo CXXFLAGS: -I./minisat/minisat
-#cgo LDFLAGS: -L./minisat -lminisat
+#cgo CXXFLAGS: -I./minisat/include -I./minisat/minisat
+#cgo LDFLAGS: -L./minisat/build/dynamic/lib -L./minisat/lib -lminisat
 #include <stdlib.h>
 #include "gosat.h"
 */

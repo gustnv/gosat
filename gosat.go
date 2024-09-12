@@ -9,7 +9,6 @@ package solver
 import "C"
 import (
 	"errors"
-	"fmt"
 	"unsafe"
 )
 
@@ -18,7 +17,7 @@ type Solver struct {
 	Status  bool // Exported field
 }
 
-func NewSolver(bootstrapWith [][]int, useTimer bool, warmStart bool) (*Solver, error) {
+func NewSolver(bootstrapWith [][]int) (*Solver, error) {
 	solver := C.minisatgh_new()
 	if solver == nil {
 		return nil, errors.New("cannot create a new solver")
@@ -44,7 +43,7 @@ func (m *Solver) Delete() {
 	}
 }
 
-func (m *Solver) AddClause(clause []int, noReturn bool) error {
+func (m *Solver) AddClause(clause []int) error {
 	if m.minisat == nil {
 		return errors.New("solver is not initialized")
 	}
@@ -57,13 +56,9 @@ func (m *Solver) AddClause(clause []int, noReturn bool) error {
 		slice[i] = C.int(lit)
 	}
 
-	fmt.Println("Adding clause: ", clause)
 	res := C.minisatgh_add_cl(m.minisat, (*C.int)(cClause), C.int(len(clause)))
 	if res == 0 {
 		m.Status = false // Update Status on failure
-	}
-
-	if !noReturn && res == 0 {
 		return errors.New("failed to add clause")
 	}
 

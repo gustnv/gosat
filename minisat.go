@@ -4,7 +4,7 @@ package minisat
 #cgo CXXFLAGS: -I./minisat/include -I./minisat/minisat
 #cgo LDFLAGS: -L./minisat/build/dynamic/lib -L./minisat/lib -lminisat
 #include <stdlib.h>
-#include "gosat.h"
+#include "minisat.h"
 */
 import "C"
 import (

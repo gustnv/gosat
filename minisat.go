@@ -110,7 +110,7 @@ func (m *Solver) GetModel() ([]int, error) {
 	return model, nil
 }
 
-func (m *Solver) AppendFormula(formula [][]int) error {
+func (m *Solver) AddClauses(formula [][]int) error {
 	if m.minisat == nil {
 		return errors.New("solver is not initialized")
 	}
